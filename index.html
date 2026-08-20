@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Chindamanee STEAM Festival 2026</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ---------- RESET & BASE ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><path d="M12 4 L22 4 L26 12 L22 20 L12 20 L8 12 L12 4 Z" fill="%23b87333" stroke="%238b5a2b" stroke-width="1.5"/><rect x="16" y="20" width="6" height="14" fill="%238b5a2b" rx="2"/><rect x="14" y="34" width="10" height="4" fill="%236b4226" rx="1"/><circle cx="14" cy="12" r="2" fill="%23d4a574"/><circle cx="20" cy="12" r="2" fill="%23d4a574"/><circle cx="17" cy="8" r="1.5" fill="%23d4a574"/></svg>') 10 10, auto;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: #020208;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ---------- COSMIC TRAVEL BACKGROUND ---------- */
+        #cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #0c102b 0%, #030511 60%, #000003 100%);
+        }
+
+        /* Twinkling & Traveling Stars */
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite alternate, warpMove var(--travel-speed) linear infinite;
+        }
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.4); }
+        }
+        @keyframes warpMove {
+            0% { transform: translateY(0px) scale(0.8); }
+            100% { transform: translateY(100vh) scale(1.2); }
+        }
+
+        /* Colorful Nebulas */
+        .nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.45;
+            animation: nebulaDrift 30s ease-in-out infinite alternate;
+        }
+        @keyframes nebulaDrift {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            50% { transform: translate(100px, -80px) scale(1.3) rotate(10deg); }
+            100% { transform: translate(-60px, 60px) scale(0.85) rotate(-10deg); }
+        }
+
+        /* Shooting Stars */
+        .shooting-star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 3px rgba(100, 200, 255, 0.8);
+            animation: shoot linear infinite;
+        }
+        .shooting-star::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(to left, rgba(255,255,255,0.9), rgba(100,200,255,0.4), transparent);
+            transform: rotate(-35deg);
+            transform-origin: right center;
+        }
+        @keyframes shoot {
+            0% { transform: translate(0, 0); opacity: 1; }
+            70% { opacity: 1; }
+            100% { transform: translate(-900px, 600px); opacity: 0; }
+        }
+
+        /* Space Objects Container (Traveling through Space Effect) */
+        .space-entity {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            animation: spaceFly var(--speed) linear infinite;
+            filter: drop-shadow(0 0 15px var(--glow-color, rgba(100,200,255,0.4)));
+            user-select: none;
+            opacity: 0.9;
+        }
+
+        .space-entity img, .space-entity svg, .space-entity .icon-graphic {
+            width: var(--entity-size, 60px);
+            height: var(--entity-size, 60px);
+            animation: floatRotate var(--rot-speed, 12s) ease-in-out infinite alternate;
+        }
+
+        .space-entity .entity-label {
+            margin-top: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--label-color, #64c8ff);
+            background: rgba(0, 0, 0, 0.6);
+            padding: 3px 10px;
+            border-radius: 12px;
+            border: 1px solid var(--label-color, rgba(100, 200, 255, 0.4));
+            box-shadow: 0 0 12px var(--glow-color, rgba(100, 200, 255, 0.2));
+            white-space: nowrap;
+        }
+
+        @keyframes spaceFly {
+            0% { transform: translate(0, 0) scale(0.7); }
+            50% { transform: translate(40px, -30px) scale(1.05); }
+            100% { transform: translate(-20px, 20px) scale(0.7); }
+        }
+
+        @keyframes floatRotate {
+            0% { transform: rotate(-8deg) translateY(0); }
+            100% { transform: rotate(12deg) translateY(-15px); }
+        }
+
+        /* Accretion Disk Black Hole */
+        .black-hole-container {
+            position: absolute;
+            top: 60%;
+            right: 8%;
+            width: 180px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .black-hole-core {
+            width: 90px;
+            height: 90px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 0 0 50px #9333ea, 0 0 100px #4f46e5, inset 0 0 20px #c084fc;
+            z-index: 2;
+            animation: bhPulse 4s ease-in-out infinite alternate;
+        }
+
+        .black-hole-disk {
+            position: absolute;
+            width: 220px;
+            height: 60px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse at center, rgba(244,114,182,0.8) 0%, rgba(147,51,234,0.5) 40%, transparent 70%);
+            transform: rotate(-25deg);
+            filter: blur(4px);
+            animation: diskSpin 8s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes bhPulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 40px #9333ea, 0 0 80px #4f46e5; }
+            100% { transform: scale(1.1); box-shadow: 0 0 70px #ec4899, 0 0 130px #8b5cf6; }
+        }
+
+        @keyframes diskSpin {
+            0% { transform: rotate(-25deg) scale(1); }
+            50% { transform: rotate(-20deg) scale(1.1); }
+            100% { transform: rotate(-25deg) scale(1); }
+        }
+
+        /* ---------- CONTENT WRAPPER ---------- */
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px 20px 40px;
+        }
+
+        /* ---------- HEADER ---------- */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 0 15px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid rgba(100, 200, 255, 0.25);
+            gap: 15px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .logo-area img {
+            height: 65px;
+            width: auto;
+            filter: drop-shadow(0 0 20px rgba(100, 200, 255, 0.5));
+        }
+
+        .logo-area h1 {
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #38bdf8, #a855f7, #f43f5e, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px rgba(168, 85, 247, 0.3);
+            letter-spacing: 1.5px;
+        }
+
+        /* ---------- SECTION TITLE ---------- */
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 40px 0 10px;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #ef4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 50px rgba(251, 191, 36, 0.25);
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.15rem;
+            color: #94a3b8;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        /* ---------- CATEGORY CARDS ---------- */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .cat-card {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(16px);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 22px;
+            padding: 25px 15px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cat-card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 22px;
+            background: conic-gradient(from 0deg, transparent, rgba(56, 189, 248, 0.3), transparent, rgba(168, 85, 247, 0.3), transparent);
+            animation: rotateGlow 6s linear infinite;
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: -1;
+        }
+
+        .cat-card:hover::before { opacity: 1; }
+        @keyframes rotateGlow { 100% { transform: rotate(360deg); } }
+
+        .cat-card:hover {
+            transform: scale(1.08) translateY(-8px);
+            border-color: rgba(56, 189, 248, 0.6);
+            box-shadow: 0 20px 50px rgba(56, 189, 248, 0.25);
+            background: rgba(30, 41, 59, 0.6);
+        }
+
+        .cat-card.clicked {
+            animation: popClick 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popClick {
+            0% { transform: scale(0.85); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .cat-card i {
+            font-size: 3rem;
+            color: #38bdf8;
+            margin-bottom: 14px;
+            display: block;
+            filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.4));
+        }
+
+        .cat-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #f1f5f9;
+            letter-spacing: 0.5px;
+        }
+
+        .cat-card .badge {
+            display: inline-block;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            font-size: 0.8rem;
+            padding: 4px 14px;
+            border-radius: 30px;
+            margin-top: 10px;
+            font-weight: 600;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        /* ---------- NAMES LIST ---------- */
+        .names-section {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border-radius: 24px;
+            padding: 35px 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            display: none;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            animation: fadeSlide 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .names-section.active { display: block; }
+
+        @keyframes fadeSlide {
+            0% { opacity: 0; transform: translateY(30px) scale(0.97); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .names-section h2 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #38bdf8;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .names-section h2 .close-btn {
+            margin-left: auto;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #f87171;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .names-section h2 .close-btn:hover {
+            background: rgba(239, 68, 68, 0.4);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        }
+
+        .names-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 14px;
+        }
+
+        .name-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 14px 20px;
+            border-radius: 40px;
+            text-align: center;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #e2e8f0;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .name-item:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: rgba(56, 189, 248, 0.6);
+            color: #fff;
+            transform: scale(1.05) translateY(-3px);
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.25);
+        }
+
+        .name-item:active {
+            transform: scale(0.95);
+        }
+
+        /* ---------- TOAST ---------- */
+        .toast {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(16px);
+            color: #fff;
+            padding: 18px 42px;
+            border-radius: 60px;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border: 2px solid #38bdf8;
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.4);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 999;
+            text-align: center;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ---------- RESPONSIVE ---------- */
+        @media (max-width: 768px) {
+            .logo-area h1 { font-size: 1.4rem; }
+            .logo-area img { height: 48px; }
+            .section-title { font-size: 2.2rem; }
+            .categories { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+            .names-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .toast { font-size: 1rem; padding: 14px 24px; white-space: normal; width: 90%; }
+        }
+
+        @media (max-width: 480px) {
+            .logo-area h1 { font-size: 1.1rem; }
+            .cat-card { padding: 18px 10px; }
+            .cat-card i { font-size: 2.2rem; }
+            header { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== COSMIC TRAVEL BACKGROUND ===== -->
+    <div id="cosmic-bg">
+        <!-- Vibrant Colorful Nebulas -->
+        <div class="nebula" style="width:750px;height:550px;background:radial-gradient(circle, #4f46e5 0%, transparent 70%);top:2%;left:2%;"></div>
+        <div class="nebula" style="width:650px;height:650px;background:radial-gradient(circle, #9333ea 0%, transparent 70%);bottom:5%;right:2%;animation-delay:5s;"></div>
+        <div class="nebula" style="width:550px;height:450px;background:radial-gradient(circle, #06b6d4 0%, transparent 70%);top:40%;left:50%;animation-delay:10s;"></div>
+        <div class="nebula" style="width:500px;height:500px;background:radial-gradient(circle, #ec4899 0%, transparent 70%);top:65%;left:8%;animation-delay:15s;"></div>
+        <div class="nebula" style="width:600px;height:400px;background:radial-gradient(circle, #f59e0b 0%, transparent 70%);top:10%;left:65%;animation-delay:8s;"></div>
+
+        <!-- Accretion Disk Black Hole -->
+        <div class="black-hole-container">
+            <div class="black-hole-disk"></div>
+            <div class="black-hole-core"></div>
+        </div>
+
+        <!-- Cosmic Travel Space Missions -->
+        <!-- Apollo 11 -->
+        <div class="space-entity" style="--speed:24s; --entity-size:65px; --glow-color:rgba(251,191,36,0.5); --label-color:#fbbf24; top:12%; left:8%;">
+            <svg class="icon-graphic" viewBox="0 0 64 64" fill="none"><path d="M32 4L42 24L32 60L22 24L32 4Z" fill="#e2e8f0" stroke="#fbbf24" stroke-width="2"/><circle cx="32" cy="24" r="5" fill="#38bdf8"/></svg>
+            <span class="entity-label">🚀 Apollo 11</span>
+        </div>
+
+        <!-- James Webb Space Telescope -->
+        <div class="space-entity" style="--speed:28s; --entity-size:70px; --glow-color:rgba(245,158,11,0.6); --label-color:#f59e0b; top:18%; left:72%; animation-delay:3s;">
+            <svg class="icon-graphic" viewBox="0 0 64 64"><polygon points="32,8 52,20 52,44 32,56 12,44 12,20" fill="#fbbf24" stroke="#d97706" stroke-width="2"/><circle cx="32" cy="32" r="8" fill="#1e293b"/></svg>
+            <span class="entity-label">🔭 James Webb</span>
+        </div>
+
+        <!-- Voyager 1 -->
+        <div class="space-entity" style="--speed:22s; --entity-size:60px; --glow-color:rgba(56,189,248,0.5); --label-color:#38bdf8; top:52%; left:12%; animation-delay:6s;">
+            <svg class="icon-graphic" viewBox="0 0 64 64"><circle cx="32" cy="32" r="18" fill="#cbd5e1" stroke="#38bdf8" stroke-width="2"/><line x1="32" y1="14" x2="32" y2="2" stroke="#38bdf8" stroke-width="3"/></svg>
+            <span class="entity-label">🛰️ Voyager 1</span>
+        </div>
+
+        <!-- Voyager 2 -->
+        <div class="space-entity" style="--speed:26s; --entity-size:60px; --glow-color:rgba(168,85,247,0.5); --label-color:#a855f7; top:75%; left:48%; animation-delay:11s;">
+            <svg class="icon-graphic" viewBox="0 0 64 64"><circle cx="32" cy="32" r="16" fill="#cbd5e1" stroke="#a855f7" stroke-width="2"/><line x1="16" y1="32" x2="2" y2="32" stroke="#a855f7" stroke-width="3"/></svg>
+            <span class="entity-label">🛰️ Voyager 2</span>
+        </div>
+
+        <!-- International Space Station (ISS) -->
+        <div class="space-entity" style="--speed:30s; --entity-size:75px; --glow-color:rgba(52,211,153,0.5); --label-color:#34d399; top:42%; left:82%; animation-delay:8s;">
+            <svg class="icon-graphic" viewBox="0 0 64 64"><rect x="12" y="28" width="40" height="8" fill="#94a3b8"/><rect x="4" y="16" width="12" height="32" fill="#34d399"/><rect x="48" y="16" width="12" height="32" fill="#34d399"/></svg>
+            <span class="entity-label">🛸 ISS</span>
+        </div>
+
+        <!-- Hubble Telescope -->
+        <div class="space-entity" style="--speed:20s; --entity-size:60px; --glow-color:rgba(244,63,94,0.5); --label-color:#f43f5e; top:82%; left:20%; animation-delay:14s;">
+            <svg class="icon-graphic" viewBox="0 0 64 64"><rect x="22" y="12" width="20" height="40" rx="4" fill="#cbd5e1" stroke="#f43f5e" stroke-width="2"/></svg>
+            <span class="entity-label">📡 Hubble</span>
+        </div>
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toast" class="toast">🎉 Thank you for participating in the Chindamanee STEAM Festival 2026!</div>
+
+    <!-- ===== MAIN CONTAINER ===== -->
+    <div class="container">
+
+        <!-- HEADER -->
+        <header>
+            <div class="logo-area">
+                <img src="logo.png" alt="Chindamanee STEAM Logo" onerror="this.style.display='none'">
+                <h1>Chindamanee STEAM Festival 2026</h1>
+            </div>
+        </header>
+
+        <!-- TITLE -->
+        <h2 class="section-title">⚡ Choose Your Category ⚡</h2>
+        <p class="subtitle">Click a category, then select your name to download your certificate</p>
+
+        <!-- CATEGORIES -->
+        <div class="categories" id="categoryContainer"></div>
+
+        <!-- NAMES DISPLAY -->
+        <div class="names-section" id="namesSection">
+            <h2 id="categoryTitle">
+                <span id="catTitleText">Category</span>
+                <button class="close-btn" id="closeNames">✕ Close</button>
+            </h2>
+            <div class="names-grid" id="namesGrid"></div>
+        </div>
+
+        <footer style="text-align:center; margin-top:60px; color:#64748b; font-size:0.85rem; border-top:1px solid rgba(255,255,255,0.06); padding-top:25px;">
+            Chindamanee STEAM Festival 2026 &bull; All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        // ==============================================================
+        // 1. DYNAMIC COSMIC STARS GENERATOR
+        // ==============================================================
+        const bg = document.getElementById('cosmic-bg');
+
+        for (let i = 0; i < 350; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = 1 + Math.random() * 2.5;
+            star.style.width = size + 'px';
+            star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.setProperty('--duration', (2 + Math.random() * 4) + 's');
+            star.style.setProperty('--travel-speed', (25 + Math.random() * 35) + 's');
+            star.style.animationDelay = (Math.random() * 5) + 's';
+            
+            if (Math.random() < 0.2) {
+                const colors = ['#fbbf24', '#38bdf8', '#f43f5e', '#34d399', '#a855f7', '#60a5fa'];
+                star.style.background = colors[Math.floor(Math.random() * colors.length)];
+                star.style.boxShadow = '0 0 10px ' + star.style.background;
+            }
+            bg.appendChild(star);
+        }
+
+        // Shooting Stars
+        for (let i = 0; i < 5; i++) {
+            const ss = document.createElement('div');
+            ss.className = 'shooting-star';
+            ss.style.left = (20 + Math.random() * 75) + '%';
+            ss.style.top = (2 + Math.random() * 40) + '%';
+            ss.style.animationDuration = (4 + Math.random() * 6) + 's';
+            ss.style.animationDelay = (Math.random() * 12) + 's';
+            bg.appendChild(ss);
+        }
+
+        // ==============================================================
+        // 2. DATA: CATEGORIES & STUDENTS
+        // ==============================================================
+        const categoryData = {
+            "certificate of participants": [
+                "Aandeep Singh","Agayusup Rozyyev","Aisha Beknazar","Amalia Bashlykova","Anyana",
+                "Artit Sayanhansa","Aunyada Phanitchonrachart","Chirayu Tamra","Dana Sansernaree",
+                "Esra Yay","Hamza Hossain Hadi","Hugo Ruan","Isabel Thassanatarakom Gonzales",
+                "Jaturawich Khotmungkhun","Jiratchaya Tangyusuk","Katherina Khanijou",
+                "Kevin Thanakrit Pawa","Kluentup Owatsiriwong","Leyli Rozyyeva","Mabel Htut",
+                "Mohamed Arham","Myat Thazin Khin","Natharat Akarawong","Nitik Motwani",
+                "Osman Cholak","Pavani Pandey","Phurin Siriwithayarak","Prapannarai",
+                "Raihana Leelard","Safa Shahzad","Sant Wint Htal","Sheik Mohamed Niyas",
+                "Sithu Moe Myint","Suha Malik","Tat Boonpornpichet","Thawanret Kijsrisakul",
+                "Vasuthep Worasetthayanon","Xinyu Shi","Ziva Abbigeil Barnard",
+                "Aarav Detchaiyasak","Ahmad Bin Md Tareq","Aisha Shahab Navalta Al Marri",
+                "Amorn Kumar","Archira Pichayapa","Asato Deevongkij","Auu Thu Cheal",
+                "Chonnaphat Thumrat","Darin Pasit Swinth","Ethan Jasiel Sanchez Reynoso",
+                "Hargun Singh","Huong Yihan","Isabella Piedrahita","Jeffy",
+                "Jittrawee Janjamroon","Kaung Set Lwin","Khalil Hendra Verdian",
+                "Kris Khanijou","Lin Yaung Moe Myint","May Gone Sint Thu","Mohammad Bin Tareq",
+                "Myat Thuta Maung","Nathurputh Jirutthawong","Nuengthida Temwareewan",
+                "Paing Hmue Khit","Pharinaphat Aamornsiribunlue","Phurin Narapattaveebhorn",
+                "Primrata Nathong","Raiyan Rahman","Safia Bopoeva","Santisiri Buanmuenchol",
+                "Shwe Yee Pearl","Soha Shahzad","Suphanut Rai","Tawee Nananthasith",
+                "Thawin Kantithatkun","Vedat Koca","Zahide Hilal Parilti","Aaron Keogh",
+                "Ahmad Bin Tareq","Alessia Piedrahita","Anajak Deemit Jimenez",
+                "Areeyah Avageline Dulude","Asma Hussain","Ayana Faryal","Chun Nadi Lwin",
+                "Eaint Yoon Amara Maung","Eunsol Woo","Hnin Kyi Phyu Aung","Ian Katnikov",
+                "Itthipat Prompongsri","Jemal Ikhsan Yessimkhan","Julian Win",
+                "Kavinwit Tanasiribunchai","Khanthicha Kijsrisakul","Krittiphat Tangvattanatam",
+                "Lin Yun Xi","Mehmet Naci Parilti","Mona Sangroula","Nada Khundureh",
+                "Nesha Kittipunnapha","Nyein Thawdar Lin","Panyaraht Ifeanyichukwu",
+                "Phatharadt Budhnarakul","Pichayut Yatacot","Promboon Yatacot","Ranchida Panjan",
+                "Safiia Bopoeva","Saw Nyan Linkar Lynn","Sira Jintavivatwong","Sonia",
+                "Swan Htet Aung","Tay Zar Linn","Theingi Aung","Warot Kongsoontomkijkun",
+                "Zahro Sarvar Kizi Merjonova","Adheena Mohamed Sulaiman","Ahnran",
+                "Alexie Ray Yeagershporin","Anawin Salem","Arham Khan Pattan","Aswin",
+                "Benjapron Laikrah","Chun Nadi Lwin","Elis Yay","Fatima Hassan",
+                "Htet Su Linkar","Ibrahim Gibran Verdian","Jahongir Sarvar Ugli Merjonov",
+                "Jinada Unjit","Kaewta Kitinai","Keke Zhang","Kittichet Thakral",
+                "Kuppuswamy Vijaya Kumar","Lwin Phone Pyae","Moe Pyae Sone Khin",
+                "Muhammad Shahzad","Nadi Lwin","Nichchamon Suchahiran","Orhan Ertan Hasan",
+                "Pareena Sangroula","Phu Phu","Pokpong Apivessa","Punchida","Riwanshi",
+                "Sakditad Passiricha","Sett Lin Lett","Sirapassorn Asaneevutigron",
+                "Sophitthanatcha Chaviengpop","Tanasa Chenkwanlert",
+                "Teerapong Rangseesawaisaeng","Thet Hnin San","Wildan Khundureh","Zan Ye Htet",
+                "Aditi Deo","Aisha Bannaeva","Ali Vay","Anupong Sakkuntham",
+                "Arron Michael Keogh","Aung Nyein Chan","Chanathan Jitaree","Chuu Nadi Lwin",
+                "Erkan Hasan","Felix","Htoo Myat Moe Oo","Ifza Fatima","Janvi Jain",
+                "Jinnicha Janjamroon","Kanpitcha Pasaprates","Kevin Koder","Klarissa Pawa",
+                "Layaung Phong Myint","Lynn Yaung Khit","Mohamed Ali","Muna Songweera",
+                "Nan Thoon Htake Htar San","Nikitha Kuppuswamy Vijayakumar","Oscar Ruan",
+                "Patcharawat Vongsrikul","Phu Tuta Po","Polphat Aukramaeteepun","Rahu Kadka",
+                "Rydvanali Yessimkhan","Samitanan Ifeanyichukwu","Sett Linn Lett",
+                "Sirin Taweepongpinyo","Sornram Meesil","Tanoo Boonpornpichet","Thant Thurain",
+                "Thevathep Sachdev","Wipada Sakolnurak","Zay Ya Bhone"
+            ],
+            "Cosplay": [
+                "Aandeep Singh","Anawin Salem","Aswin","Aunyada Phanitchonrachart",
+                "Chuu Nadi Lwin","Eunsol Woo","Jaturawich Khotmungkhun","Jiratchaya Tangyusuk",
+                "Kaewta Kitinai","Katherina Khanijou","Kavinwit Tanasiribunchai",
+                "Leyli Rozyyeva","Mona Sangroula","Muna Songweera","Nuengthida Temwareewan",
+                "Osman Cholak","Pavani Pandey","Petpairin Chatwannapong","Phong Myint",
+                "Promboon Yatacot","Raihana Leelard","Raiyan Rahman","Riwanshi Kumar",
+                "Santisiri Buanmuenchol","Sonia","Thawanrat Kijsrisakul","Ziva Abigail Barnard"
+            ],
+            "public speaking": [
+                "Agayusup Rozyyev","Ahmad Bin Md Tareq","Aisha Bannaeva","Aisha Beknazar",
+                "Aisha Shahab Navalta Al Marri","Alessia Piedrahita","Anawin Salem",
+                "Areeyah Avageline Dulude","Asma Hussain","Ethan Jasiel Sanchez Reynoso",
+                "Eunsol Woo","Fatima Hassan","Hamza Hossain Hadi","Hnin Kyi Phyu Aung",
+                "Htoo Myat Moe Oo","Ian Katnikov","Janvi Jain","Jaturawich Khotmungkhun",
+                "Jemal Ikhsan Yessimkhan","Kanpitcha Pasaprates","Katherina Khanijou",
+                "Kevin Thanakrit Pawa","Khalil Hendra Verdian","Klarissa Pawa",
+                "Kluentup Owatsiriwong","Kris Khanijou","Krittiphat Tangvattanatam",
+                "Layaung Phong Myint","Leyli Rozyyeva","Mehmet Naci Parilti",
+                "Moe Pyae Sone Khin","Mohammad Bin Tareq","Muhammad Shahzad",
+                "Muna Songweera","Myat Thazin Khine","Nikitha Kuppuswamy Vijayakumar",
+                "Orhan Ertan Hasan","Osman Cholak","Pavani Pandey",
+                "Pharinaphat Aamornsiribunlue","Phatharadt Budhnarakul",
+                "Phuririn Narapattaveebhorn","Raihana Leelard","Raiyan Rahman",
+                "Rydvanali Yessimkhan","Shwe Yee Pearl","Sirin Taweepongpinyo",
+                "Soha Shahzad","Sornram Meesil","Suha Malik","Suphanut Rai",
+                "Tat Boonpornpichet","Thant Thurain","Thawin Kantithatkun","Vedat Koca",
+                "Warot Kongsoontornkijkun","Zahide Hilal Parilti","Zan Ye Htet",
+                "Ziva Abbigail Barnard"
+            ],
+            "Robotics Sensorship": [
+                "Aisha Shahab Navalta Al Marri","Julian Win","Myat Thazine Khine"
+            ],
+            "Science Wizard Olympiad": [
+                "Adheena Mohamed Sulaiman","Aisha Shahab Navalta Al Marri","Aandeep Singh",
+                "Anupong Sakkuntham","Areeyah Avageline","Arham Khan Pattan","Aung Nyein Chan",
+                "Auu Thu Cheal","Ayana Faryal Mohamed Ali","Chanathan Jitaree","Chirayu Tamra",
+                "Chonnaphat Thumrat","Elis Yay","Esra Yay","Ethan Jasiel Reynoso",
+                "Eunsol Woo","Halil Hendra Verdian","Ibrahim Gibran Verdian","Ifza Fatima",
+                "Isabel Thassanatarakorn Gonzales","Isabella Piedrahita","Itthipat Prompongsri",
+                "Janvi Jain","Julian Win","Kaewta Kitinai","Kaung Set Lwin","Keke Zhang",
+                "Khanthicha Kijsrisakul","Lin Yaung Moe Myint","Lwin Phone Pyae",
+                "Lynn Yaung Khit","Mabel Htut","May Gone Sint Thu","Moe Pyae Sone Khin",
+                "Mohamed Arham Sheik Mohamed Niyas","Mohamed Arham","Myat Thazine Khine",
+                "Myat Thuta Maung","Nan Thoon Htake Htar San","Nichchamon Suchahiran",
+                "Nuengthida Temwareewan","Nyein Thawdar Lin","Oscar Ruan","Pavani Pandey",
+                "Phu Tuta Po","Phurin Siriwithayarak","Primrata Nathong",
+                "Rydvanali Yessimkhan","Safiia Bopoeva","Samitanan Ifeanyichukwu",
+                "Sant Wint Htal","Saw Nyan Linkar Lynn","Sett Linn Lett","Sheik Mohamed Niyas",
+                "Sira Jintavivatwong","Sirapassorn Asaneevutigron","Sonia","Swan Htet Aung",
+                "Tat Boonpornpichet","Tay Zar Linn","Thawin Kantithatkun","Thet Hnin San",
+                "Vasuthep Worasetthayanon","Wipada Sakolnurak","Zahide Hilal Parilti",
+                "Zay Ya Bhone","Ziva Abbigail Barnard"
+            ],
+            "Siam Youth Film": [
+                "Aditi Deo","Aisha Bannaeva","Halil Hendra Verdian","Htet Su Linkar",
+                "Kris Khanijou","Soha Shahzad","Thevathep Sachdev","Vedat Koca",
+                "Zahide Hilal Parilti","Ziva Abigail Barnard"
+            ],
+            "Young Scientist": [
+                "Aarav Detchaiyasak","Aaron Keogh","Agayusup Rozyyev","Ahrnan",
+                "Aisha Bannaeva","Aisha Beknazar","Alessia Piedrahita",
+                "Alexie Ray Yeagershporin","Ali Vay","Amalia Bashlykova","Amorn Kumar",
+                "Anajah Deemit Jimenez","Areeyah Avageline Dulude","Arron Michael Keogh",
+                "Aryan Shukla","Asato Deevongkij","Asma Hussain","Aunyada Phanitchonrachart",
+                "Benjapron Laikrah","Erkan Hasan","Ethan Jasiel Sanchez Reynoso",
+                "Eunsol Woo","Fatima Fatima Hassan","Hargun Singh","Htoo Myat Moe Oo",
+                "Janvi Jain","Jaturawich Khotmungkhun","Jiratchaya Tangyusuk",
+                "Jittrawee Janjamroon","Kaewta Kitinai","Katherina Khanijou",
+                "Kavinwit Tanasiribunchai","Kevin Koder","Khalil Hendra","Kittichet Thakral",
+                "Klarissa Pawa","Kluentup Owatsiriwong","Kris Khanijou",
+                "Krittiphat Tangvattanatam","Leyli Rozyyeva","Lwin Phone Pyae",
+                "Mohammad Bin Tareq","Muna Songweera","Myat Thuta Maung",
+                "Nuengthida Temwareewan","Oscar Ruan","Patcharawat Vongsrikul",
+                "Pavani Pandey","Petpairin Chotwannapong","Phumiphat Budhnarakul",
+                "Phuririn Narapattaveebhorn","Pichayut Yatacot","Polphat Aukramaeteepun",
+                "Raiyan Rahman","Ranchida Panjan","Rydvanali Yessimkhan",
+                "Santisiri Buamuenchol","Shwe Yee Pearl","Soha Shahzad","Sonia",
+                "Sophitthanatcha Chaviengpop","Suha Malik","Suphanut Rai",
+                "Tat Boonpornpichet","Teerapong Rangseesawaisaeng","Thawanrat Kijsrisakul",
+                "Thawin Kantithatkun","Wipada Sakolnurak","Xinyu Shi"
+            ],
+            "Typing Master": [
+                "Mehmet Naci Parilti",
+                "Primrata Nathong",
+                "Dana Sansernaree",
+                "Swan Htet Aung",
+                "Khalil Hendra Verdian",
+                "Htoo Myat Moe Oo",
+                "Thawin Kantithhatkun",
+                "Muhammad Shahzad",
+                "Krittiphat Tangvattanatam",
+                "Thant Thu Rain"
+            ]
+        };
+
+        const iconMap = {
+            "certificate of participants": "fa-award",
+            "Cosplay": "fa-mask",
+            "public speaking": "fa-microphone",
+            "Robotics Sensorship": "fa-robot",
+            "Science Wizard Olympiad": "fa-flask",
+            "Siam Youth Film": "fa-film",
+            "Young Scientist": "fa-microscope",
+            "Typing Master": "fa-keyboard"
+        };
+
+        // ==============================================================
+        // 3. RENDER CATEGORY CARDS
+        // ==============================================================
+        const container = document.getElementById('categoryContainer');
+
+        Object.keys(categoryData).forEach(cat => {
+            const count = categoryData[cat].length;
+            const card = document.createElement('div');
+            card.className = 'cat-card';
+            card.dataset.category = cat;
+            card.innerHTML = `
+                <i class="fas ${iconMap[cat] || 'fa-folder'}"></i>
+                <h3>${cat}</h3>
+                <span class="badge">${count} students</span>
+            `;
+            card.addEventListener('click', () => {
+                card.classList.remove('clicked');
+                void card.offsetWidth;
+                card.classList.add('clicked');
+                openCategory(cat);
+            });
+            container.appendChild(card);
+        });
+
+        // ==============================================================
+        // 4. OPEN CATEGORY & DISPLAY NAMES
+        // ==============================================================
+        const namesSection = document.getElementById('namesSection');
+        const namesGrid = document.getElementById('namesGrid');
+        const catTitleText = document.getElementById('catTitleText');
+        const closeBtn = document.getElementById('closeNames');
+
+        function openCategory(cat) {
+            const students = categoryData[cat];
+            if (!students) return;
+
+            catTitleText.textContent = cat;
+            namesGrid.innerHTML = '';
+
+            students.forEach(name => {
+                const el = document.createElement('div');
+                el.className = 'name-item';
+                el.textContent = name;
+                el.addEventListener('click', () => downloadCertificate(cat, name));
+                namesGrid.appendChild(el);
+            });
+
+            namesSection.classList.add('active');
+            namesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        closeBtn.addEventListener('click', () => {
+            namesSection.classList.remove('active');
+        });
+
+        // ==============================================================
+        // 5. DOWNLOAD CERTIFICATE
+        // ==============================================================
+        function downloadCertificate(category, name) {
+            const safeName = name.replace(/[^a-zA-Z0-9 ]/g, '').trim();
+            const pdfPath = `${encodeURIComponent(category)}/${encodeURIComponent(safeName)}.pdf`;
+
+            const link = document.createElement('a');
+            link.href = pdfPath;
+            link.download = `${safeName}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('🎉 Downloading certificate for ' + name + '!');
+        }
+
+        // ==============================================================
+        // 6. TOAST MESSAGES
+        // ==============================================================
+        let toastTimeout;
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // ==============================================================
+        // 7. BACKGROUND MUSIC
+        // ==============================================================
+        function playMusic() {
+            const audio = new Audio('background-music.mp3');
+            audio.loop = true;
+            audio.volume = 0.4;
+            audio.play().catch(() => {
+                document.addEventListener('click', function playOnClick() {
+                    audio.play();
+                    document.removeEventListener('click', playOnClick);
+                }, { once: true });
+            });
+        }
+
+        window.addEventListener('load', playMusic);
+    </script>
+</body>
+</html>
